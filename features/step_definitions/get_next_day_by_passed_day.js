@@ -1,10 +1,13 @@
 import {Given, When, Then} from '@cucumber/cucumber';
 import {chai} from "../chai.js";
 import {app} from '../../app.js';
+import {initDb} from "../../db/initDb.js";
+
 const expect = chai.expect;
 let response;
 
-Given('the day of the week is {string}', function (day) {
+Given('the day of the week is {string}', async function (day) {
+    await initDb()
     this.day = day;
 });
 

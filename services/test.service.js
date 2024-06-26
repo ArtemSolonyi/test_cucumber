@@ -1,17 +1,25 @@
-import {daysOfWeek, daysOfWeekFromNumber} from '/Users/auranode/WebstormProjects/test_cucumber/utils/day-of-week.js'
+import {daysOfWeek, daysOfWeekFromNumber} from '../utils/day-of-week.js'
+import {Test} from "../db/Test.js";
 
 class TestService {
-    getTodayDayInLocalString() {
-        return new Date().getFullYear()
+    async getTestData() {
+        const result = await Test.findOne()
+        if (!result) return {status: 404}
+        return result.dataValues.dayOfWeek+'s'
     }
 
-    getNextDayByPassedDay(dayOfWeekInStr) {
+    async getNextDayByPassedDay(dayOfWeekInStr) {
         let day = daysOfWeek[dayOfWeekInStr?.toLowerCase()];
+        let dayWeek;
         if (day === undefined || day == null) return {status: 404}
         if (day < 6) {
-            return daysOfWeekFromNumber[++day];
+            dayWeek = daysOfWeekFromNumber[++day];
+        } else {
+            dayWeek = daysOfWeekFromNumber[0];
         }
-        return daysOfWeekFromNumber[0];
+        const result = (await Test.create({dayOfWeek: dayWeek})).dataValues.dayOfWeek
+        console.log(result,'result')
+        return result
     }
 }
 

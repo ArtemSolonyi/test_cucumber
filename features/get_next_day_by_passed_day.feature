@@ -9,3 +9,5 @@ Feature: Get the next day by passed day
     Given the day of the week is "invalid_day"
     When I request the next day by passed day
     Then I should receive a 404 status
+
+
